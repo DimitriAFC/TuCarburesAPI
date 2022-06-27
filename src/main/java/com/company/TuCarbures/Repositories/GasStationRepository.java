@@ -1,6 +1,6 @@
 package com.company.TuCarbures.Repositories;
 
-import com.company.TuCarbures.GasStation;
+import com.company.TuCarbures.Classes.GasStation;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,6 +1,6 @@
 package com.company.TuCarbures.Controllers;
 import io.swagger.v3.oas.annotations.Operation;
-import com.company.TuCarbures.GasStation;
+import com.company.TuCarbures.Classes.GasStation;
 import com.company.TuCarbures.Repositories.GasStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
