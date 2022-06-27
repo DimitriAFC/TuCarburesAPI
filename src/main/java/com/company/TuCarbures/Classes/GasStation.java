@@ -1,7 +1,6 @@
 package com.company.TuCarbures.Classes;
 
 import java.util.List;
-import com.company.TuCarbures.Classes.Fuel;
 
 public class GasStation {
     public String id;
