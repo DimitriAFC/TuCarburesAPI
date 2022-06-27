@@ -1,17 +1,18 @@
-package com.company.TuCarbures;
+package com.company.TuCarbures.Classes;
+
 
 import java.util.List;
 
 public class GasStation {
     public String id;
-    private String gasStationName;
-    private String brand;
-    private String adress;
-    private Long zipcode;
-    private String city;
-    private Long longitude;
-    private Long latitude;
-    private List<Fuel> fuels;
+    public String gasStationName;
+    public String brand;
+    public String adress;
+    public Long zipcode;
+    public String city;
+    public Long longitude;
+    public Long latitude;
+    public List<Fuel> fuels;
 
     public GasStation(String id, String gasStationName, String brand, String adress, Long zipcode, String city,
                       Long longitude, Long latitude, List<Fuel> fuels){
