@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,12 +36,13 @@ public class GasStationController {
     @GetMapping(value = "/Releve/{id}")
     @Operation(summary = "relevé de prix de chaque carburant pour une station")
     public HashMap<String, Double> priceOfFuels(@PathVariable("id") String id){
-        GasStation gasStation = gasStationRepository.findById(id).get();
+        Optional<GasStation> station = gasStationRepository.findById(id);
 
         HashMap<String, Double> fuelPrice = new HashMap<String,Double>();
-        for (Fuel fuel : gasStation.getFuels()) {
+        for (Fuel fuel : station.get().getFuels()) {
             String fuelName = fuel.getFuelName();
             Double price = fuel.getPrice();
+
             fuelPrice.put(fuelName,price);
         }
 
