@@ -9,9 +9,9 @@ public class GasStation {
     public String adress;
     public Long zipcode;
     public String city;
-    public Long longitude;
-    public Long latitude;
-    public List<Fuel> fuels;
+    public float longitude;
+    public float latitude;
+    public List<Fuel> fuels ;
 
     public GasStation(String id, String gasStationName, String brand, String adress, Long zipcode, String city,
                       Long longitude, Long latitude, List<Fuel> fuels){
