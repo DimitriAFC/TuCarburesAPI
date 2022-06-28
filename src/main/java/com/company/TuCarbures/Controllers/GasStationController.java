@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import com.company.TuCarbures.Classes.GasStation;
 import com.company.TuCarbures.Repositories.GasStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,6 @@ public class GasStationController {
 
     private ApiErrors apiErrors = new ApiErrors();
 
-    @ConfigurationProperties
     @PostMapping(value = "/StationService")
     @Operation(summary = "ajouter une station, avec les carburants : Sans Plomb 98 (E5)\n" +
             "- Sans Plomb 95 (E5)\n" +
