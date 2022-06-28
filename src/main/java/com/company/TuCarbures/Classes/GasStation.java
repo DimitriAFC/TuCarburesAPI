@@ -14,7 +14,7 @@ public class GasStation {
     public List<Fuel> fuels ;
 
     public GasStation(String id, String gasStationName, String brand, String adress, Long zipcode, String city,
-                      Long longitude, Long latitude, List<Fuel> fuels){
+                      float longitude, float latitude, List<Fuel> fuels){
         this.id = id;
         this.gasStationName = gasStationName;
         this.brand = brand;

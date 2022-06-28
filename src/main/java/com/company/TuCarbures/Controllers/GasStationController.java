@@ -1,7 +1,10 @@
 package com.company.TuCarbures.Controllers;
 
+
 import com.company.TuCarbures.ApiErrors;
 import com.company.TuCarbures.Classes.Fuel;
+import io.swagger.v3.oas.annotations.Operation;
+
 import com.company.TuCarbures.Classes.GasStation;
 import com.company.TuCarbures.Repositories.GasStationRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +63,12 @@ public class GasStationController {
         gasStationRepository.save(gasStation);
 
        return ResponseEntity.ok(gasStation.id);
+    }
+
+    @GetMapping("StationService/{id}")
+    @Operation(summary = "Retourner une station avec ses carburants")
+    public Optional<GasStation> getStation(@PathVariable("id") String id) {
+        return gasStationRepository.findById(id);
     }
 
 }
