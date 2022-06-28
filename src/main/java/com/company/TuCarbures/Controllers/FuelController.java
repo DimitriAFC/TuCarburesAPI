@@ -20,7 +20,7 @@ public class FuelController {
     @Operation(summary = "Obtenir les attributs d'un carburant en fonction de son ID")
     public String GetFuelId(@PathVariable("id") String id) {
         Optional<Fuel> byId = fuelRepository.findById(id);
-        String fuelName = byId.get().fuelName;
+        String fuelName = byId.get().getFuelName();
         String europeanCode = byId.get().europeanCode;
         return "Carburant : "+fuelName+" , code europeen : "+europeanCode;
     }
