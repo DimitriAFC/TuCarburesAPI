@@ -8,8 +8,10 @@ public class User {
     public int zipCode;
     public String city;
     public int numberPhone;
+    public String password;
+    public String email;
 
-    public User(String idUser, String userName, String favoriteStation, String adress, int zipCode, String city, int numberPhone) {
+    public User(String idUser, String userName, String favoriteStation, String adress, int zipCode, String city, int numberPhone, String password, String email) {
 
         this.idUser = idUser;
         this.userName = userName;
@@ -18,6 +20,8 @@ public class User {
         this.zipCode = zipCode;
         this.city = city;
         this.numberPhone = numberPhone;
+        this.password = password;
+        this.email = email;
 
     }
 }
