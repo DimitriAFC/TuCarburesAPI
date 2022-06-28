@@ -1,7 +1,5 @@
 package com.company.TuCarbures.Controllers;
-import com.company.TuCarbures.ApiError;
 import com.company.TuCarbures.ApiErrors;
-import com.company.TuCarbures.Classes.Fuel;
 import io.swagger.v3.oas.annotations.Operation;
 import com.company.TuCarbures.Classes.GasStation;
 import com.company.TuCarbures.Repositories.GasStationRepository;
@@ -11,9 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -51,4 +47,11 @@ public class GasStationController {
 
        return ResponseEntity.ok(gasStation.id);
     }
+
+    @GetMapping("StationService/{id}")
+    @Operation(summary = "Retourner une station avec ses carburants")
+    public Optional<GasStation> getStation(@PathVariable("id") String id) {
+        return gasStationRepository.findById(id);
+    }
+
 }
