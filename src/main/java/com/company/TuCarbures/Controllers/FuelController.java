@@ -15,6 +15,7 @@ public class FuelController {
     @Autowired
     FuelRepository fuelRepository;
 
+
     @GetMapping(path = "fuel/{id}")
     @Operation(summary = "Obtenir les attributs d'un carburant en fonction de son ID")
     public String GetFuelId(@PathVariable("id") String id) {
@@ -30,5 +31,6 @@ public class FuelController {
         fuelRepository.save(fuel);
         return ResponseEntity.ok(fuel.id);
     }
+
 }
 
