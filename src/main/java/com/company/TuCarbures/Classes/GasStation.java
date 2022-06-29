@@ -26,4 +26,8 @@ public class GasStation {
         this.fuels = fuels;
     }
 
+    public List<Fuel> getFuels() {
+        return fuels;
+    }
+
 }
