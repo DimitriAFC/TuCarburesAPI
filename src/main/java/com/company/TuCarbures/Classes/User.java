@@ -12,7 +12,8 @@ public class User {
     public String password;
     public String email;
 
-    public User(String id, String userName, String favoriteStation,String favoriteFuel, String adress, String zipCode, String city, String numberPhone, String password, String email) {
+    public User(String id, String userName, String favoriteStation, String favoriteFuel, String adress, String zipCode,
+                String city, String numberPhone, String password, String email) {
 
         this.id = id;
         this.userName = userName;
