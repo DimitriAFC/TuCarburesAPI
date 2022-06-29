@@ -1,8 +1,8 @@
 package com.company.TuCarbures.Classes;
 
 public class Fuel {
-    public  String id;
-    private String fuelName;
+    public String id;
+    public String fuelName;
     private Double price;
     public String date;
     public String heure;

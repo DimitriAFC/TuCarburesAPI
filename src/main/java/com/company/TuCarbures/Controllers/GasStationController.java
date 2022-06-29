@@ -2,8 +2,8 @@ package com.company.TuCarbures.Controllers;
 
 
 import com.company.TuCarbures.ApiErrors;
-
 import com.company.TuCarbures.Classes.Fuel;
+
 import com.company.TuCarbures.Classes.GasStationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -13,20 +13,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
 
+import java.util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/StationService")
@@ -51,6 +46,7 @@ public class GasStationController<géographiques> {
             if (fuel.isAvailable) {
                 String fuelName = fuel.getFuelName();
                 Double price = fuel.getPrice();
+
 
                 fuelPrice.put(fuelName, price);
             }
@@ -85,6 +81,20 @@ public class GasStationController<géographiques> {
     }
 
 
+    @GetMapping("/marque")
+    @Operation(summary = "Les marques de stations service")
+    public HashMap<String, String> brandOfStation() {
+        Iterable<GasStation> station = gasStationRepository.findAll();
+        HashMap<String, String> brandGas = new HashMap<String, String>();
+        for (GasStation gasStation : station) {
+            String stationName = gasStation.gasStationName;
+            String brandName = gasStation.brand;
+
+            brandGas.put(stationName, brandName);
+        }
+
+        return brandGas;
+
     @GetMapping("/StationsServices")
     @Operation(summary = "Les stations service : marque, adresse postale, coordonnées géographiques")
     public List<GasStationRequest> getAllStations() {
@@ -92,7 +102,7 @@ public class GasStationController<géographiques> {
         List<GasStation> result = new ArrayList<>();
         Iterable<GasStation> stations = gasStationRepository.findAll();
         stations.forEach(result::add);
-//       List<GasStation> result2 = Lists.newArrayList(stations);
+//      List<GasStation> result2 = Lists.newArrayList(stations);
         List<GasStationRequest> resultFinal = new ArrayList<>();
 
         for (int i = 0; i < result.size(); i++) {
@@ -113,5 +123,6 @@ public class GasStationController<géographiques> {
     public List<GasStationRequest> getAllStationsStatement() {
         List<GasStationRequest> resultFinal = new ArrayList<>();
         return resultFinal;
+
     }
 }

@@ -12,10 +12,10 @@ public class GasStation {
     public String city;
     public float longitude;
     public float latitude;
-    public List<Fuel> fuels ;
+    public List<Fuel> fuels;
 
     public GasStation(String id, String gasStationName, String brand, String adress, Long zipcode, String city,
-                      float longitude, float latitude, List<Fuel> fuels){
+                      float longitude, float latitude, List<Fuel> fuels) {
         this.id = id;
         this.gasStationName = gasStationName;
         this.brand = brand;
