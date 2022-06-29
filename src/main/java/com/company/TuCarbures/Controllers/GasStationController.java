@@ -3,14 +3,20 @@ package com.company.TuCarbures.Controllers;
 
 import com.company.TuCarbures.ApiErrors;
 import com.company.TuCarbures.Classes.Fuel;
+
+import com.company.TuCarbures.Classes.GasStationRequest;
+import io.swagger.v3.oas.annotations.Operation;
+
 import com.company.TuCarbures.Classes.GasStation;
 import com.company.TuCarbures.Repositories.GasStationRepository;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
+import java.util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,15 +28,13 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Tag(name = "historique", description = "gestion des stations services")
-public class GasStationController {
+public class GasStationController<géographiques> {
 
     @Autowired
     GasStationRepository gasStationRepository;
 
     private ApiErrors apiErrors = new ApiErrors();
 
-    //Fournir le dernier relevé de prix de chaque carburant disponible avec la date du
-    //relevé pour une station service donnée (pour l’affichage de la station favorite)
 
     @GetMapping(value = "/Releve/{id}")
     @Operation(summary = "relevé de prix de chaque carburant pour une station")
@@ -39,10 +43,13 @@ public class GasStationController {
 
         HashMap<String, Double> fuelPrice = new HashMap<String, Double>();
         for (Fuel fuel : station.get().getFuels()) {
-            String fuelName = fuel.getFuelName();
-            Double price = fuel.getPrice();
+            if (fuel.isAvailable) {
+                String fuelName = fuel.getFuelName();
+                Double price = fuel.getPrice();
 
-            fuelPrice.put(fuelName, price);
+
+                fuelPrice.put(fuelName, price);
+            }
         }
 
         return fuelPrice;
@@ -73,6 +80,7 @@ public class GasStationController {
         return gasStationRepository.findById(id);
     }
 
+
     @GetMapping("/marque")
     @Operation(summary = "Les marques de stations service")
     public HashMap<String, String> brandOfStation() {
@@ -86,5 +94,35 @@ public class GasStationController {
         }
 
         return brandGas;
+
+    @GetMapping("/StationsServices")
+    @Operation(summary = "Les stations service : marque, adresse postale, coordonnées géographiques")
+    public List<GasStationRequest> getAllStations() {
+
+        List<GasStation> result = new ArrayList<>();
+        Iterable<GasStation> stations = gasStationRepository.findAll();
+        stations.forEach(result::add);
+//      List<GasStation> result2 = Lists.newArrayList(stations);
+        List<GasStationRequest> resultFinal = new ArrayList<>();
+
+        for (int i = 0; i < result.size(); i++) {
+            String brand = result.get(i).brand;
+            String adress = result.get(i).adress;
+            Long zipcode = result.get(i).zipcode;
+            String city = result.get(i).city;
+            float latitude = result.get(i).latitude;
+            float longitude = result.get(i).longitude;
+
+            resultFinal.add(new GasStationRequest(brand, adress, zipcode, city, latitude, longitude));
+        }
+        return resultFinal;
+    }
+
+    @GetMapping("/Releves")
+    @Operation(summary = "Les relevés : carburant, station, date, heure, prix constaté à la pompe")
+    public List<GasStationRequest> getAllStationsStatement() {
+        List<GasStationRequest> resultFinal = new ArrayList<>();
+        return resultFinal;
+
     }
 }

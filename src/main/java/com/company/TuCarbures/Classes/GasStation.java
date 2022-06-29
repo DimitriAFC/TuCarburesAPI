@@ -1,5 +1,6 @@
 package com.company.TuCarbures.Classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GasStation {
@@ -29,4 +30,6 @@ public class GasStation {
     public List<Fuel> getFuels() {
         return fuels;
     }
+
+
 }
