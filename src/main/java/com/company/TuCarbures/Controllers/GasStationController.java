@@ -2,12 +2,11 @@ package com.company.TuCarbures.Controllers;
 
 
 import com.company.TuCarbures.ApiErrors;
-import com.company.TuCarbures.Classes.Fuel;
 
-import com.company.TuCarbures.Classes.GasStationRequest;
+import com.company.TuCarbures.Classes.*;
+
 import io.swagger.v3.oas.annotations.Operation;
 
-import com.company.TuCarbures.Classes.GasStation;
 import com.company.TuCarbures.Repositories.GasStationRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -37,22 +36,21 @@ public class GasStationController<géographiques> {
 
 
     @GetMapping(value = "/Releve/{id}")
-    @Operation(summary = "relevé de prix de chaque carburant pour une station")
-    public HashMap<String, Double> priceOfFuels(@PathVariable("id") String id) {
+    @Operation(summary = "relevé de prix de chaque carburant disponible pour une station avec la date")
+    public List<FuelAvailable> priceOfFuels(@PathVariable("id") String id) {
         Optional<GasStation> station = gasStationRepository.findById(id);
-
+        List<FuelAvailable> result = new ArrayList<>();
         HashMap<String, Double> fuelPrice = new HashMap<String, Double>();
         for (Fuel fuel : station.get().getFuels()) {
             if (fuel.isAvailable) {
+                String date = fuel.date;
                 String fuelName = fuel.getFuelName();
                 Double price = fuel.getPrice();
+                result.add(new FuelAvailable(fuelName,price,date));
 
-
-                fuelPrice.put(fuelName, price);
             }
         }
-
-        return fuelPrice;
+        return result;
     }
 
     @PostMapping(value = "/")
@@ -75,7 +73,7 @@ public class GasStationController<géographiques> {
 
 
     @GetMapping("/{id}")
-    @Operation(summary = "Retourner une station avec ses carburants")
+    @Operation(summary = "Retourner une station ")
     public Optional<GasStation> getStation(@PathVariable("id") String id) {
         return gasStationRepository.findById(id);
     }
@@ -102,7 +100,10 @@ public class GasStationController<géographiques> {
         List<GasStation> result = new ArrayList<>();
         Iterable<GasStation> stations = gasStationRepository.findAll();
         stations.forEach(result::add);
+
+
 //      List<GasStation> result2 = Lists.newArrayList(stations);
+
         List<GasStationRequest> resultFinal = new ArrayList<>();
 
         for (int i = 0; i < result.size(); i++) {
@@ -120,8 +121,24 @@ public class GasStationController<géographiques> {
 
     @GetMapping("/Releves")
     @Operation(summary = "Les relevés : carburant, station, date, heure, prix constaté à la pompe")
-    public List<GasStationRequest> getAllStationsStatement() {
-        List<GasStationRequest> resultFinal = new ArrayList<>();
+    public List<FuelRequest> getAllStationsStatement() {
+        List<FuelRequest> resultFinal = new ArrayList<>();
+        List<GasStation> result = new ArrayList<>();
+        Iterable<GasStation> stations = gasStationRepository.findAll();
+        stations.forEach(result::add);
+
+        for (int i = 0; i < result.size(); i++) {
+            String gasStationName = result.get(i).gasStationName;
+            List<Fuel> fuels = result.get(i).fuels;
+            for (int y = 0; y < fuels.size(); y++) {
+                String fuelName = fuels.get(y).getFuelName();
+                double price = fuels.get(y).getPrice();
+                String date = fuels.get(y).date;
+                String heure = fuels.get(y).heure;
+                resultFinal.add(new FuelRequest(gasStationName,fuelName,price,date,heure));
+            }
+
+        }
         return resultFinal;
 
     }
