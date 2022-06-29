@@ -17,7 +17,7 @@ public class FuelController {
 
 
     @GetMapping(path = "fuel/{id}")
-    @Operation(summary = "Obtenir le carburant : nom, code européen en fonction de son ID")
+    @Operation(summary = "Obtenir le code européen et le nom d'un carburant en fonction de son ID")
     public String GetFuelId(@PathVariable("id") String id) {
         Optional<Fuel> byId = fuelRepository.findById(id);
         String fuelName = byId.get().getFuelName();
