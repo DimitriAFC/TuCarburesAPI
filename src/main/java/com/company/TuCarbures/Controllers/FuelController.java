@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class FuelController {
@@ -25,8 +25,23 @@ public class FuelController {
         return "Carburant : "+fuelName+" , code europeen : "+europeanCode;
     }
 
-    @PostMapping(value = "/Fuel")
-    @Operation(summary = "ajouter un carburant")
+    @GetMapping(path = "/Fuel")
+    @Operation(summary = " Obtenir TOUT les carburants : nom, code européen ")
+    public HashMap<String, String> GetAllFuel(){
+        List<Fuel> listFuel = new ArrayList<Fuel>();
+        Iterable<Fuel> all = fuelRepository.findAll();
+        all.iterator().forEachRemaining(listFuel::add);
+        HashMap<String, String>  nameFuelAndCodeEuropean = new HashMap<>();
+        for (Fuel fuel : listFuel){
+            String name = fuel.fuelName;
+            String code = fuel.europeanCode;
+            nameFuelAndCodeEuropean.put(name, code);
+        }
+        return nameFuelAndCodeEuropean;
+    }
+
+    @PostMapping(value = "Fuel/add")
+    @Operation(summary = "Ajouter un carburant")
     public ResponseEntity<String> postFuel(@RequestBody Fuel fuel) {
         fuelRepository.save(fuel);
         return ResponseEntity.ok(fuel.id);
