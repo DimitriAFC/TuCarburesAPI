@@ -94,7 +94,7 @@ public class GasStationController<géographiques> {
         }
 
         return brandGas;
-
+    }
     @GetMapping("/StationsServices")
     @Operation(summary = "Les stations service : marque, adresse postale, coordonnées géographiques")
     public List<GasStationRequest> getAllStations() {
