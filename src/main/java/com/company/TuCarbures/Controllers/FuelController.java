@@ -15,6 +15,7 @@ public class FuelController {
     @Autowired
     ServiceFuel serviceFuel;
 
+
     @GetMapping(path = "fuel/{id}")
     @Operation(summary = "Obtenir le code européen et le nom d'un carburant en fonction de son ID")
     public String GetFuelId(@PathVariable("id") String id) {
