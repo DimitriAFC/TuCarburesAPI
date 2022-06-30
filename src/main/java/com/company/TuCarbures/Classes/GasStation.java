@@ -32,4 +32,7 @@ public class GasStation {
     }
 
 
+    public boolean isApproved() {
+        return true;
+    }
 }
