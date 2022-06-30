@@ -29,7 +29,7 @@ public class FuelController {
     @Operation(summary = " Obtenir TOUT les carburants : nom, code européen ")
     public HashMap<String, String> GetAllFuel() {
         List<Fuel> listFuel = new ArrayList<Fuel>();
-        Iterable<Fuel> all = fuelRepository.findAll();
+        Iterable<Fuel> all = serviceFuel.findAllFuel();
         all.iterator().forEachRemaining(listFuel::add);
         HashMap<String, String> nameFuelAndCodeEuropean = new HashMap<>();
         for (Fuel fuel : listFuel) {
