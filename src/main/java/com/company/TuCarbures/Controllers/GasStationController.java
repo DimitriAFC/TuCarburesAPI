@@ -73,7 +73,7 @@ public class GasStationController {
     @GetMapping("/marque")
     @Operation(summary = "Les marques de stations service")
     public HashMap<String, String> brandOfStation() {
-        Iterable<GasStation> station = gasStationRepository.findAll();
+        Iterable<GasStation> station = serviceGasStation.findAllStation();
         HashMap<String, String> brandGas = new HashMap<String, String>();
         for (GasStation gasStation : station) {
             String stationName = gasStation.gasStationName;
@@ -83,6 +83,7 @@ public class GasStationController {
         }
 
         return brandGas;
+    }
 
     @GetMapping("/StationsServices")
     @Operation(summary = "Les stations service : marque, adresse postale, coordonnées géographiques")
