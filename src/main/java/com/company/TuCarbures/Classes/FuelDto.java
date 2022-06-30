@@ -1,6 +1,7 @@
 package com.company.TuCarbures.Classes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FuelDto {
@@ -35,5 +36,14 @@ public class FuelDto {
 
         }
         return resultFinal;
+    }
+    public static HashMap<String,String> convertToHasMap(List<Fuel> fuelList){
+        HashMap<String, String> nameFuelAndCodeEuropean = new HashMap<>();
+        for (Fuel fuel : fuelList) {
+            String name = fuel.fuelName;
+            String code = fuel.europeanCode;
+            nameFuelAndCodeEuropean.put(name, code);
+        }
+        return nameFuelAndCodeEuropean;
     }
 }

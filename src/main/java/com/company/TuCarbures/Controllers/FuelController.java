@@ -1,6 +1,7 @@
 package com.company.TuCarbures.Controllers;
 
 import com.company.TuCarbures.Classes.Fuel;
+import com.company.TuCarbures.Classes.FuelDto;
 import com.company.TuCarbures.Repositories.FuelRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,7 @@ public class FuelController {
         List<Fuel> listFuel = new ArrayList<Fuel>();
         Iterable<Fuel> all = serviceFuel.findAllFuel();
         all.iterator().forEachRemaining(listFuel::add);
-        HashMap<String, String> nameFuelAndCodeEuropean = new HashMap<>();
-        for (Fuel fuel : listFuel) {
-            String name = fuel.fuelName;
-            String code = fuel.europeanCode;
-            nameFuelAndCodeEuropean.put(name, code);
-        }
-        return nameFuelAndCodeEuropean;
+        return FuelDto.convertToHasMap(listFuel);
     }
 
     @PostMapping(value = "Fuel/add")
