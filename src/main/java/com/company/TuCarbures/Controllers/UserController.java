@@ -1,7 +1,6 @@
 package com.company.TuCarbures.Controllers;
 
 import com.company.TuCarbures.Classes.*;
-import com.company.TuCarbures.Repositories.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -19,20 +18,20 @@ import java.util.Optional;
 @Tag(name = "Utilisateur", description = "gestion des utilisateurs")
 public class UserController {
 
+
     @Autowired
-    UserRepository userRepository;
+    ServiceUser serviceUser;
 
     @PostMapping(path = "/")
     @Operation(summary = "Ajoute un utilisateur")
-    public String PostUser(@RequestBody User user) {
-        userRepository.save(user);
-        return "Utilisateur sauvegardé ";
+    public User PostUser(@RequestBody User user) {
+       return  serviceUser.saveUser(user);
     }
 
     @GetMapping(path = "/connexion/{userName}/{password}")
     @Operation(summary = "connexion de l'utilisateur")
     public Optional<User> connexion(@PathVariable("userName") String userName, @PathVariable("password") String password) {
-        Iterable<User> users = userRepository.findAll();
+        Iterable<User> users = serviceUser.findAllUser();
         List<User> result = new ArrayList<>();
         users.forEach(result::add);
         Optional<User> user = null;
@@ -43,7 +42,7 @@ public class UserController {
             String id = result.get(i).id;
 
             if (userName.equals(userNameList) && password.equals(passwordList)) {
-                user = userRepository.findById(id);
+                user = serviceUser.findUser(id);
             }
         }
         return user;

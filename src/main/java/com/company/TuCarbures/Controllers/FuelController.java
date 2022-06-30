@@ -13,13 +13,12 @@ import java.util.*;
 public class FuelController {
 
     @Autowired
-    FuelRepository fuelRepository;
-
+    ServiceFuel serviceFuel;
 
     @GetMapping(path = "fuel/{id}")
     @Operation(summary = "Obtenir le code européen et le nom d'un carburant en fonction de son ID")
     public String GetFuelId(@PathVariable("id") String id) {
-        Optional<Fuel> byId = fuelRepository.findById(id);
+        Optional<Fuel> byId = serviceFuel.findFuel(id);
         String fuelName = byId.get().getFuelName();
         String europeanCode = byId.get().europeanCode;
         return "Carburant : " + fuelName + " , code europeen : " + europeanCode;
@@ -43,7 +42,7 @@ public class FuelController {
     @PostMapping(value = "Fuel/add")
     @Operation(summary = "Ajouter un carburant")
     public ResponseEntity<String> postFuel(@RequestBody Fuel fuel) {
-        fuelRepository.save(fuel);
+        serviceFuel.saveFuel(fuel);
         return ResponseEntity.ok(fuel.id);
     }
 
