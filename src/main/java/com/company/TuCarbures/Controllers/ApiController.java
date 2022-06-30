@@ -85,7 +85,8 @@ public class ApiController {
                     ),
                     @Parameter(
                             name = "nom",
-                            description = "nom carburant : Sans Plomb 98 \n" +
+                            description = "nom carburant : " +
+                                    "- Sans Plomb 98 \n" +
                                     "- Sans Plomb 95 \n" +
                                     "- Superéthanol\n" +
                                     "- Gazole \n" +
@@ -94,11 +95,7 @@ public class ApiController {
                     ),
                     @Parameter(
                             name = "code",
-                            description= "Code Européen : E5\n" +
-                                    "E10\n" +
-                                    "E85\n" +
-                                    "B7\n" +
-                                    "LPG",
+                            description= "Code Européen : E5 ,E10 ,E85 ,B7 LPG",
                             required = true
                     )
             },

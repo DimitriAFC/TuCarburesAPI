@@ -40,6 +40,7 @@ public class GasStationController {
     private ApiErrors apiErrors = new ApiErrors();
 
     private GasStationDto gasStationDto;
+    private FuelDto fuelDto;
 
 
 
@@ -96,24 +97,12 @@ public class GasStationController {
     @GetMapping("/Releves")
     @Operation(summary = "Les relevés : carburant, station, date, heure, prix constaté à la pompe")
     public List<FuelDto> getAllStationsStatement() {
-        List<FuelDto> resultFinal = new ArrayList<>();
+
         List<GasStation> result = new ArrayList<>();
         Iterable<GasStation> stations = serviceGasStation.findAllStation();
         stations.forEach(result::add);
 
-        for (int i = 0; i < result.size(); i++) {
-            String gasStationName = result.get(i).gasStationName;
-            List<Fuel> fuels = result.get(i).fuels;
-            for (int y = 0; y < fuels.size(); y++) {
-                String fuelName = fuels.get(y).getFuelName();
-                double price = fuels.get(y).getPrice();
-                String date = fuels.get(y).date;
-                String heure = fuels.get(y).heure;
-                resultFinal.add(new FuelDto(gasStationName, fuelName, price, date, heure));
-            }
-
-        }
-        return resultFinal;
+        return FuelDto.convertToListFuel(result) ;
 
     }
 }
