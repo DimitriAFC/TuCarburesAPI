@@ -2,13 +2,26 @@ package com.company.TuCarbures.Controllers;
 
 
 import com.company.TuCarbures.ApiErrors;
+
 import com.company.TuCarbures.Classes.*;
+
+import io.swagger.v3.oas.annotations.Operation;
+
+import com.company.TuCarbures.Repositories.GasStationRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +61,27 @@ public class GasStationController {
         return ResponseEntity.ok(gasStation.id);
     }
 
+
     @GetMapping("/{id}")
     @Operation(summary = "Retourner une station ")
     public Optional<GasStation> getStation(@PathVariable("id") String id) {
         return serviceGasStation.findGastation(id);
     }
 
+
+    @GetMapping("/marque")
+    @Operation(summary = "Les marques de stations service")
+    public HashMap<String, String> brandOfStation() {
+        Iterable<GasStation> station = gasStationRepository.findAll();
+        HashMap<String, String> brandGas = new HashMap<String, String>();
+        for (GasStation gasStation : station) {
+            String stationName = gasStation.gasStationName;
+            String brandName = gasStation.brand;
+
+            brandGas.put(stationName, brandName);
+        }
+
+        return brandGas;
 
     @GetMapping("/StationsServices")
     @Operation(summary = "Les stations service : marque, adresse postale, coordonnées géographiques")
@@ -62,7 +90,6 @@ public class GasStationController {
         List<GasStation> result = new ArrayList<>();
         Iterable<GasStation> stations = serviceGasStation.findAllStation();
         stations.forEach(result::add);
-
         return GasStationDto.convertListToGasStationDto(result);
     }
 
@@ -87,5 +114,6 @@ public class GasStationController {
 
         }
         return resultFinal;
+
     }
 }
