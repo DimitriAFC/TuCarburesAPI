@@ -1,4 +1,4 @@
 package com.company.TuCarbures.Classes;
 
-public class UserRequest {
+public class UserDto {
 }
