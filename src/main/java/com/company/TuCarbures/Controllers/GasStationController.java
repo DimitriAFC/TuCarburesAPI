@@ -57,6 +57,7 @@ public class GasStationController {
     @GetMapping("/marque")
     @Operation(summary = "Les marques de stations service")
     public HashMap<String, String> brandOfStation() {
+
         Iterable<GasStation> station = serviceGasStation.findAllStation();
         return serviceGasStation.convertListToHasMap(station);
     }
