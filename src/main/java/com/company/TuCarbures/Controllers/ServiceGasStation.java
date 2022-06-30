@@ -1,10 +1,14 @@
 package com.company.TuCarbures.Controllers;
 
+import com.company.TuCarbures.Classes.Fuel;
+import com.company.TuCarbures.Classes.FuelAvailableDto;
 import com.company.TuCarbures.Classes.GasStation;
+import com.company.TuCarbures.Classes.GasStationDto;
 import com.company.TuCarbures.Repositories.GasStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +30,7 @@ public class ServiceGasStation {
     public GasStation saveGasStation(GasStation gasStation) {
         return gasStationRepository.save(gasStation);
     }
+
     public HashMap<String,String> convertListToHasMap(Iterable<GasStation> gasStationList){
         HashMap<String, String> brandGas = new HashMap<>();
         for (GasStation gasStation : gasStationList) {
@@ -34,5 +39,19 @@ public class ServiceGasStation {
             brandGas.put(stationName, brandName);
         }
         return brandGas;
+    }
+
+
+    public List<GasStation> filterFuel(List<GasStation> stations, String nom, String code) {
+        List<GasStation> result = new ArrayList<>();
+        for (int i = 0; i < stations.size(); i++) {
+            String fuelName = stations.get(i).getFuels().get(i).fuelName;
+            String europeanCode = stations.get(i).getFuels().get(i).europeanCode;
+            if(fuelName.equals(nom) && europeanCode.equals(code)){
+
+
+            }
+        }
+        return null;
     }
 }

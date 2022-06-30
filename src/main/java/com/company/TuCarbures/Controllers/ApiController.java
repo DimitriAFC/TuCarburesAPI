@@ -2,7 +2,7 @@ package com.company.TuCarbures.Controllers;
 
 import com.company.TuCarbures.ApiErrors;
 import com.company.TuCarbures.Classes.Fuel;
-import com.company.TuCarbures.Classes.FuelAvailable;
+import com.company.TuCarbures.Classes.FuelAvailableDto;
 import com.company.TuCarbures.Classes.GasStation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +28,15 @@ public class ApiController {
     @Autowired
     ServiceGasStation serviceGasStation;
 
+    @Autowired
+    ServiceDelta serviceDelta;
+
     private ApiErrors apiErrors = new ApiErrors();
 
     @GetMapping(value = "/Releve/{id}")
     @Operation(
             tags = "Relevé GasStation",
             summary = "relevé de prix de chaque carburant disponible pour une station avec la date",
-            parameters = {
-                    @Parameter(
-                            name = "id",
-                            description = "Unique id for search information",
-                            required = true
-                    )
-            },
             responses = {
                     @ApiResponse(responseCode = "200",
                             description = "Successfuly ",
@@ -55,18 +48,9 @@ public class ApiController {
                             description = "Error servor "
                     ),
             })
-    public List<FuelAvailable> priceOfFuels(String id) {
+    public List<FuelAvailableDto> priceOfFuels(@PathVariable("id") String id) {
         Optional<GasStation> station = serviceGasStation.findGastation(id);
-        List<FuelAvailable> result = new ArrayList<>();
-        for (Fuel fuel : station.get().getFuels()) {
-            if (fuel.isAvailable) {
-                String date = fuel.date;
-                String fuelName = fuel.getFuelName();
-                Double price = fuel.getPrice();
-                result.add(new FuelAvailable(fuelName, price, date));
-            }
-        }
-        return result;
+        return FuelAvailableDto.convertOptionalToList(station);
     }
 
     //Fournir la station la plus proche proposant le carburant le moins cher, avec le prix du
@@ -105,13 +89,18 @@ public class ApiController {
                             content = @Content(schema = @Schema(implementation = GasStation.class))
                     ),
                     @ApiResponse(responseCode = "400",
-                            description = "GasStation Not found"),
+                            description = " Not found"),
                     @ApiResponse(responseCode = "500",
                             description = "Error servor "
                     ),
             })
     public GasStation gasStationDistanceAndFuelLessExpensive(long distance, String nom, String code) {
-        Iterable<GasStation> allStation = serviceGasStation.findAllStation();
+
+        List<GasStation> result = new ArrayList<>();
+        Iterable<GasStation> stations = serviceGasStation.findAllStation();
+        stations.forEach(result::add);
+     //   List<GasStation> listeStation = serviceGasStation.filterFuel(result,nom,code);
+
         return null;
     }
 
