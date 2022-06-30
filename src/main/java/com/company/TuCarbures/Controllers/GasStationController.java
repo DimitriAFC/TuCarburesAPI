@@ -2,12 +2,9 @@ package com.company.TuCarbures.Controllers;
 
 
 import com.company.TuCarbures.ApiErrors;
-
-import com.company.TuCarbures.Classes.*;
-
-import io.swagger.v3.oas.annotations.Operation;
-
-import com.company.TuCarbures.Repositories.GasStationRepository;
+import com.company.TuCarbures.Classes.FuelDto;
+import com.company.TuCarbures.Classes.GasStation;
+import com.company.TuCarbures.Classes.GasStationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.*;
-
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +21,7 @@ import java.util.Optional;
 @RequestMapping(path = "/StationService")
 @CrossOrigin(origins = "*")
 @Slf4j
-@Tag(name = "historique", description = "gestion des stations services")
+@Tag(name = "Gestion", description = "gestions des stations services")
 public class GasStationController {
 
     @Autowired
@@ -39,26 +29,21 @@ public class GasStationController {
 
     private ApiErrors apiErrors = new ApiErrors();
 
-    private GasStationDto gasStationDto;
-    private FuelDto fuelDto;
-
-
 
     @PostMapping(value = "/")
-    @Operation(summary = "ajouter une station, avec les carburants : Sans Plomb 98 (E5)\n" +
+    @Operation(summary = "ajouter une station, avec les carburants : " +
+            "- Sans Plomb 98 (E5)\n" +
             "- Sans Plomb 95 (E5)\n" +
             "- Sans Plomb 95 (E10)\n" +
             "- Superéthanol E85\n" +
             "- Gazole (B7)\n" +
             "- GPL ")
     public ResponseEntity<String> postGasStation(@RequestBody GasStation gasStation) {
-
         if (gasStation.gasStationName.equals("string") || gasStation.id.equals("string")) {
             apiErrors.addError("404", "la station est vide");
             return ResponseEntity.badRequest().body("la station n'est pas correct");
         }
         serviceGasStation.saveGasStation(gasStation);
-
         return ResponseEntity.ok(gasStation.id);
     }
 
@@ -69,20 +54,12 @@ public class GasStationController {
         return serviceGasStation.findGastation(id);
     }
 
-
     @GetMapping("/marque")
     @Operation(summary = "Les marques de stations service")
     public HashMap<String, String> brandOfStation() {
-        Iterable<GasStation> station = gasStationRepository.findAll();
-        HashMap<String, String> brandGas = new HashMap<String, String>();
-        for (GasStation gasStation : station) {
-            String stationName = gasStation.gasStationName;
-            String brandName = gasStation.brand;
-
-            brandGas.put(stationName, brandName);
-        }
-
-        return brandGas;
+        Iterable<GasStation> station = serviceGasStation.findAllStation();
+        return serviceGasStation.convertListToHasMap(station);
+    }
 
     @GetMapping("/StationsServices")
     @Operation(summary = "Les stations service : marque, adresse postale, coordonnées géographiques")
@@ -103,6 +80,5 @@ public class GasStationController {
         stations.forEach(result::add);
 
         return FuelDto.convertToListFuel(result) ;
-
     }
 }
