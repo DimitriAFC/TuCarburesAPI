@@ -21,11 +21,11 @@ public class ServiceGasStation {
     @Autowired
     GasStationRepository gasStationRepository;
 
-    public Optional<GasStation> findGastation(String id){
+    public Optional<GasStation> findGastation(String id) {
         return gasStationRepository.findById(id);
     }
 
-    public Iterable<GasStation> findAllStation(){
+    public Iterable<GasStation> findAllStation() {
         return gasStationRepository.findAll();
     }
 
@@ -33,7 +33,7 @@ public class ServiceGasStation {
         return gasStationRepository.save(gasStation);
     }
 
-    public HashMap<String,String> convertListToHasMap(Iterable<GasStation> gasStationList){
+    public HashMap<String, String> convertListToHasMap(Iterable<GasStation> gasStationList) {
         HashMap<String, String> brandGas = new HashMap<>();
         for (GasStation gasStation : gasStationList) {
             String stationName = gasStation.gasStationName;
@@ -43,7 +43,16 @@ public class ServiceGasStation {
         return brandGas;
     }
 
-
+    public void setPriceOfFuelId(String idFuel, Double price, GasStation gasStation) {
+        for (Fuel gasStation1 : gasStation.getFuels())
+            if (gasStation1.getId().equals(idFuel)) {
+                gasStation1.setDate("01/07/2022");
+                gasStation1.setPrice(price);
+                gasStation1.setHeure("11:00");
+                gasStation1.setAvailable(true);
+                saveGasStation(gasStation);
+            }
+    }
 
 
     public List<Optional> filterFuel(List<GasStation> stations, String nom, String code) {
@@ -51,8 +60,8 @@ public class ServiceGasStation {
         for (int i = 0; i < stations.size(); i++) {
             String fuelName = stations.get(i).getFuels().get(i).getFuelName();
             String europeanCode = stations.get(i).getFuels().get(i).getEuropeanCode();
-            if(fuelName.equals(nom) && europeanCode.equals(code)){
-                String id= stations.get(i).id;
+            if (fuelName.equals(nom) && europeanCode.equals(code)) {
+                String id = stations.get(i).id;
                 Optional<Fuel> byId = fuelRepository.findById(id);
                 result.add(byId);
             }
