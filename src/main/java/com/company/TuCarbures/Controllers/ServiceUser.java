@@ -26,13 +26,13 @@ public class ServiceUser {
         return userRepository.findAll();
     }
 
-    public void updateUserDetails(@RequestBody @Valid User userDetails, User user) {
-        user.setAdress(userDetails.getAdress());
-        user.setZipCode(userDetails.getZipCode());
-        user.setCity(userDetails.getCity());
-        user.setNumberPhone(userDetails.getNumberPhone());
-        user.setPassword(userDetails.getPassword());
-        user.setEmail(userDetails.getEmail());
-        user.setUserName(userDetails.getUserName());
-    }
+//    public void updateUserDetails(@RequestBody @Valid User userDetails, User user) {
+//        user.setAdress(userDetails.getAdress());
+//        user.setZipCode(userDetails.getZipCode());
+//        user.setCity(userDetails.getCity());
+//        user.setNumberPhone(userDetails.getNumberPhone());
+//        user.setPassword(userDetails.getPassword());
+//        user.setEmail(userDetails.getEmail());
+//        user.setUserName(userDetails.getUserName());
+//    }
 }

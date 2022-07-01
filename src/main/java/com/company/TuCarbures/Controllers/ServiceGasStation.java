@@ -42,20 +42,15 @@ public class ServiceGasStation {
         }
         return brandGas;
     }
-    public void setPriceOfList(List<Fuel> fuels, String id, Double price){
-        for (Fuel fuel : fuels){
-            if(fuel.id.equals(id)){
-                fuel.setPrice(price);
-            }
-        }
-    }
+
+
 
 
     public List<Optional> filterFuel(List<GasStation> stations, String nom, String code) {
         List<Optional> result = new ArrayList<>();
         for (int i = 0; i < stations.size(); i++) {
-            String fuelName = stations.get(i).getFuels().get(i).fuelName;
-            String europeanCode = stations.get(i).getFuels().get(i).europeanCode;
+            String fuelName = stations.get(i).getFuels().get(i).getFuelName();
+            String europeanCode = stations.get(i).getFuels().get(i).getEuropeanCode();
             if(fuelName.equals(nom) && europeanCode.equals(code)){
                 String id= stations.get(i).id;
                 Optional<Fuel> byId = fuelRepository.findById(id);

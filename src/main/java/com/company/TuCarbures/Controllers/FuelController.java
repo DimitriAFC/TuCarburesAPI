@@ -2,7 +2,6 @@ package com.company.TuCarbures.Controllers;
 
 import com.company.TuCarbures.Classes.Fuel;
 import com.company.TuCarbures.Classes.FuelDto;
-import com.company.TuCarbures.Repositories.FuelRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class FuelController {
     public String GetFuelId(@PathVariable("id") String id) {
         Optional<Fuel> byId = serviceFuel.findFuel(id);
         String fuelName = byId.get().getFuelName();
-        String europeanCode = byId.get().europeanCode;
+        String europeanCode = byId.get().getEuropeanCode();
         return "Carburant : " + fuelName + " , code europeen : " + europeanCode;
     }
 
@@ -39,7 +38,7 @@ public class FuelController {
     @Operation(summary = "Ajouter un carburant")
     public ResponseEntity<String> postFuel(@RequestBody Fuel fuel) {
         serviceFuel.saveFuel(fuel);
-        return ResponseEntity.ok(fuel.id);
+        return ResponseEntity.ok(fuel.getId());
     }
 
 }

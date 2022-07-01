@@ -25,6 +25,9 @@ import java.util.Optional;
 public class GasStationController {
 
     @Autowired
+    ServiceFuel serviceFuel;
+
+    @Autowired
     ServiceGasStation serviceGasStation;
 
     private ApiErrors apiErrors = new ApiErrors();
@@ -85,28 +88,10 @@ public class GasStationController {
 
     @PutMapping("/{idStation}/{idFuel}")
     @Operation(summary = "Changement de prix de chaque carburant disponible pour une station avec la date")
-//            parameters = {
-//                    @Parameter(
-//                            name = "idStation",
-//                            description = "Id de la station",
-//                            required = true
-//                    ),
-//                    @Parameter(
-//                            name = "idFuel",
-//                            description = "Id du carburant",
-//                            required = true
-//                    ),
-//                    @Parameter(
-//                            name = "price",
-//                            description = "Prix du carburant",
-//                            required = true
-//                    )
-//            }
-//    )
     public void getStationAndFuel(@PathVariable("idStation")String idStation, @PathVariable("idFuel")String idFuel,@PathVariable("price")Double price ) {
         Optional<GasStation> gastation = serviceGasStation.findGastation(idStation);
         List<Fuel> fuels = gastation.get().getFuels();
-       serviceGasStation.setPriceOfList(fuels,idFuel,price);
+       serviceFuel.setPriceOfList(fuels,idFuel,price);
     }
 
 
