@@ -63,27 +63,24 @@ public class UserController {
         user.setId(userId);
         user.setFavoriteStation(idStation);
         user.setFavoriteFuel(userDetails.getFavoriteFuel());
-        serviceUser.updateUserDetails(userDetails, user);
 
         final User updatedUser = serviceUser.saveUser(user);
         return ResponseEntity.ok(updatedUser);
     }
+
     @PutMapping("/users/{id}/fuel/{idFuel}")
     @Operation(summary = "changement de carburant favoris ( id ) ")
-    public ResponseEntity<User> updateFuelFavoris(
-            @PathVariable(value = "id") String userId, @PathVariable(value = "idFuel") String idFuel,
-            @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+    public ResponseEntity<User> test(
+            @PathVariable(value = "id") String userId, @PathVariable(value = "idFuel") String idFuel) throws ResourceNotFoundException {
         User user = serviceUser.findUser(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
 
         user.setId(userId);
-        user.setFavoriteStation(userDetails.getFavoriteStation());
+        user.setFavoriteStation(user.getFavoriteStation());
         user.setFavoriteFuel(idFuel);
-        serviceUser.updateUserDetails(userDetails, user);
 
         final User updatedUser = serviceUser.saveUser(user);
         return ResponseEntity.ok(updatedUser);
     }
-
 
 }

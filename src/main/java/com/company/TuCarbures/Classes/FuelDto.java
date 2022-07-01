@@ -29,8 +29,8 @@ public class FuelDto {
             for (int y = 0; y < fuels.size(); y++) {
                 String fuelName = fuels.get(y).getFuelName();
                 double price = fuels.get(y).getPrice();
-                String date = fuels.get(y).date;
-                String heure = fuels.get(y).heure;
+                String date = fuels.get(y).getDate();
+                String heure = fuels.get(y).getHeure();
                 resultFinal.add(new FuelDto(gasStationName, fuelName, price, date, heure));
             }
 
@@ -40,8 +40,8 @@ public class FuelDto {
     public static HashMap<String,String> convertToHasMap(List<Fuel> fuelList){
         HashMap<String, String> nameFuelAndCodeEuropean = new HashMap<>();
         for (Fuel fuel : fuelList) {
-            String name = fuel.fuelName;
-            String code = fuel.europeanCode;
+            String name = fuel.getFuelName();
+            String code = fuel.getEuropeanCode();
             nameFuelAndCodeEuropean.put(name, code);
         }
         return nameFuelAndCodeEuropean;
