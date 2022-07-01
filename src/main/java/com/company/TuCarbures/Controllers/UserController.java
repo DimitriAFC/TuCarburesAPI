@@ -4,9 +4,12 @@ import com.company.TuCarbures.Classes.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +28,7 @@ public class UserController {
     @PostMapping(path = "/")
     @Operation(summary = "Ajoute un utilisateur")
     public User PostUser(@RequestBody User user) {
-       return  serviceUser.saveUser(user);
+        return serviceUser.saveUser(user);
     }
 
     @GetMapping(path = "/connexion/{userName}/{password}")
@@ -37,9 +40,9 @@ public class UserController {
         Optional<User> user = null;
 
         for (int i = 0; i < result.size(); i++) {
-            String userNameList = result.get(i).userName;
-            String passwordList = result.get(i).password;
-            String id = result.get(i).id;
+            String userNameList = result.get(i).getUserName();
+            String passwordList = result.get(i).getPassword();
+            String id = result.get(i).getId();
 
             if (userName.equals(userNameList) && password.equals(passwordList)) {
                 user = serviceUser.findUser(id);
@@ -47,4 +50,40 @@ public class UserController {
         }
         return user;
     }
+
+
+    @PutMapping("/users/{id}/station/{idStation}")
+    @Operation(summary = "changement de station favorite")
+    public ResponseEntity<User> updateUserGasStationFavoris(
+            @PathVariable(value = "id") String userId, @PathVariable(value = "idStation") String idStation,
+            @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+        User user = serviceUser.findUser(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
+
+        user.setId(userId);
+        user.setFavoriteStation(idStation);
+        user.setFavoriteFuel(userDetails.getFavoriteFuel());
+        serviceUser.updateUserDetails(userDetails, user);
+
+        final User updatedUser = serviceUser.saveUser(user);
+        return ResponseEntity.ok(updatedUser);
+    }
+    @PutMapping("/users/{id}/fuel/{idFuel}")
+    @Operation(summary = "changement de carburant favoris ( id ) ")
+    public ResponseEntity<User> updateFuelFavoris(
+            @PathVariable(value = "id") String userId, @PathVariable(value = "idFuel") String idFuel,
+            @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+        User user = serviceUser.findUser(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found on :: " + userId));
+
+        user.setId(userId);
+        user.setFavoriteStation(userDetails.getFavoriteStation());
+        user.setFavoriteFuel(idFuel);
+        serviceUser.updateUserDetails(userDetails, user);
+
+        final User updatedUser = serviceUser.saveUser(user);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+
 }

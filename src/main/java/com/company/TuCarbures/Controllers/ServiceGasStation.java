@@ -42,6 +42,13 @@ public class ServiceGasStation {
         }
         return brandGas;
     }
+    public void setPriceOfList(List<Fuel> fuels, String id, Double price){
+        for (Fuel fuel : fuels){
+            if(fuel.id.equals(id)){
+                fuel.setPrice(price);
+            }
+        }
+    }
 
 
     public List<Optional> filterFuel(List<GasStation> stations, String nom, String code) {

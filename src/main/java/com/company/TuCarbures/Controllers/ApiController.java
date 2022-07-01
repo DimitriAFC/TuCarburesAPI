@@ -28,6 +28,9 @@ public class ApiController {
     @Autowired
     ServiceGasStation serviceGasStation;
 
+    @Autowired
+    ServiceDelta serviceDelta;
+
     private ApiErrors apiErrors = new ApiErrors();
 
     @GetMapping(value = "/Releve/{id}")
@@ -91,12 +94,12 @@ public class ApiController {
                             description = "Error servor "
                     ),
             })
-    public GasStation gasStationDistanceAndFuelLessExpensive(long distance, String nom, String code) {
+    public List<GasStation> gasStationDistanceAndFuelLessExpensive(long distance, String nom, String code) {
 
         List<GasStation> result = new ArrayList<>();
         Iterable<GasStation> stations = serviceGasStation.findAllStation();
         stations.forEach(result::add);
-     //   List<GasStation> listeStation = serviceGasStation.filterFuel(result,nom,code);
+        List<Optional> listeStation = serviceGasStation.filterFuel(result,nom,code);
 
         return null;
     }

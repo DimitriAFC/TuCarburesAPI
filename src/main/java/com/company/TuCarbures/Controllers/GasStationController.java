@@ -2,16 +2,16 @@ package com.company.TuCarbures.Controllers;
 
 
 import com.company.TuCarbures.ApiErrors;
-import com.company.TuCarbures.Classes.FuelDto;
-import com.company.TuCarbures.Classes.GasStation;
-import com.company.TuCarbures.Classes.GasStationDto;
+import com.company.TuCarbures.Classes.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,4 +82,32 @@ public class GasStationController {
 
         return FuelDto.convertToListFuel(result) ;
     }
+
+    @PutMapping("/{idStation}/{idFuel}")
+    @Operation(summary = "Changement de prix de chaque carburant disponible pour une station avec la date")
+//            parameters = {
+//                    @Parameter(
+//                            name = "idStation",
+//                            description = "Id de la station",
+//                            required = true
+//                    ),
+//                    @Parameter(
+//                            name = "idFuel",
+//                            description = "Id du carburant",
+//                            required = true
+//                    ),
+//                    @Parameter(
+//                            name = "price",
+//                            description = "Prix du carburant",
+//                            required = true
+//                    )
+//            }
+//    )
+    public void getStationAndFuel(@PathVariable("idStation")String idStation, @PathVariable("idFuel")String idFuel,@PathVariable("price")Double price ) {
+        Optional<GasStation> gastation = serviceGasStation.findGastation(idStation);
+        List<Fuel> fuels = gastation.get().getFuels();
+       serviceGasStation.setPriceOfList(fuels,idFuel,price);
+    }
+
+
 }
