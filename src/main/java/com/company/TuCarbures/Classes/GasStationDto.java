@@ -25,7 +25,7 @@ public class GasStationDto {
         this.latitude = latitude;
     }
 
-    public static List<GasStationDto> convertListToGasStationDto(List<GasStation> gasStationList){
+    public static List<GasStationDto> convertListToGasStationDto(List<GasStation> gasStationList) {
         List<GasStationDto> resultFinal = new ArrayList<>();
 
         for (int i = 0; i < gasStationList.size(); i++) {
@@ -37,7 +37,7 @@ public class GasStationDto {
             float latitude = gasStationList.get(i).latitude;
             float longitude = gasStationList.get(i).longitude;
 
-            resultFinal.add(new GasStationDto(id,brand, adress, zipcode, city, latitude, longitude));
+            resultFinal.add(new GasStationDto(id, brand, adress, zipcode, city, latitude, longitude));
         }
         return resultFinal;
     }

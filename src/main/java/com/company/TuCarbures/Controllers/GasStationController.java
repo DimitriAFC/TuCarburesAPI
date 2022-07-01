@@ -2,16 +2,17 @@ package com.company.TuCarbures.Controllers;
 
 
 import com.company.TuCarbures.ApiErrors;
-import com.company.TuCarbures.Classes.*;
+import com.company.TuCarbures.Classes.FuelDto;
+import com.company.TuCarbures.Classes.GasStation;
+import com.company.TuCarbures.Classes.GasStationDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,15 +84,23 @@ public class GasStationController {
         Iterable<GasStation> stations = serviceGasStation.findAllStation();
         stations.forEach(result::add);
 
-        return FuelDto.convertToListFuel(result) ;
+        return FuelDto.convertToListFuel(result);
     }
 
-    @PutMapping("/{idStation}/{idFuel}")
+    @PutMapping("/{idStation}/{idFuel}/{price}")
     @Operation(summary = "Changement de prix de chaque carburant disponible pour une station avec la date")
-    public void getStationAndFuel(@PathVariable("idStation")String idStation, @PathVariable("idFuel")String idFuel,@PathVariable("price")Double price ) {
-        Optional<GasStation> gastation = serviceGasStation.findGastation(idStation);
-        List<Fuel> fuels = gastation.get().getFuels();
-       serviceFuel.setPriceOfList(fuels,idFuel,price);
+    public ResponseEntity<GasStation> setPriceOfFuel(
+            @PathVariable("idStation") String idStation,
+            @PathVariable("idFuel") String idFuel,
+            @PathVariable("price") Double price) throws ResourceNotFoundException {
+        GasStation gasStation = serviceGasStation.findGastation(idStation)
+                .orElseThrow(() -> new ResourceNotFoundException("GasStation not found on :: " + idStation));
+
+
+        serviceGasStation.setPriceOfFuelId(idFuel, price, gasStation);
+
+        final GasStation gasStation1 = serviceGasStation.saveGasStation(gasStation);
+        return ResponseEntity.ok(gasStation1);
     }
 
 

@@ -9,13 +9,13 @@ public class FuelAvailableDto {
     public Double price;
     public String date;
 
-    public FuelAvailableDto(String fuelName, Double price, String date){
+    public FuelAvailableDto(String fuelName, Double price, String date) {
         this.fuelName = fuelName;
         this.price = price;
         this.date = date;
     }
 
-    public static List<FuelAvailableDto> convertOptionalToList(Optional<GasStation> station){
+    public static List<FuelAvailableDto> convertOptionalToList(Optional<GasStation> station) {
         List<FuelAvailableDto> result = new ArrayList<>();
         for (Fuel fuel : station.get().getFuels()) {
             if (fuel.isAvailable()) {
